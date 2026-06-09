@@ -1,130 +1,153 @@
-# 🔍 AI Resume Analyzer — NLP & Semantic Search
+# 🚀 AI Resume Analyzer — NLP & Semantic Search
 
-> Going beyond keyword matching to understand the *meaning* of your resume.
-
-![Python](https://img.shields.io/badge/Python-3.9+-0f2027?style=flat-square&logo=python&logoColor=white)
-![Streamlit](https://img.shields.io/badge/Deployed-Streamlit-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)
-![HuggingFace](https://img.shields.io/badge/HuggingFace-Transformers-FFD21E?style=flat-square&logo=huggingface&logoColor=black)
-![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
+> An intelligent resume screening tool that goes beyond keyword matching using transformer-based semantic embeddings to understand the *meaning* behind resumes and job descriptions.
 
 ---
 
-## 🚩 The problem
+## 📌 Problem Statement
 
-Most ATS (Applicant Tracking Systems) use **keyword matching**. This creates a serious flaw:
+Traditional ATS (Applicant Tracking Systems) rely on keyword matching, which causes:
 
-- Strong candidates get rejected because exact keywords are missing
-- Candidates who copy-paste keywords get shortlisted without real understanding
-- Recruiters waste hours manually screening resumes
+- Strong candidates rejected because exact keywords are missing
+- Resumes with copied keywords passing without real understanding
+- Recruiters spending significant time on manual screening
 
----
-
-## ✅ The solution
-
-This project uses **Natural Language Processing** and **Semantic Similarity** to understand the *context and meaning* of resumes — not just scan for words.
-
-```
-"deep learning" ≈ "neural networks"   ← semantic search understands this
-"deep learning" ≠ "neural networks"   ← keyword search misses this
-```
+This project solves that with **NLP + Semantic Similarity** — understanding context, not just keywords.
 
 ---
 
-## ⚙️ How it works
-
-```
-Resume PDF
-    ↓
-PDF Text Extraction  (PyPDF2)
-    ↓
-Text Cleaning & NLP Preprocessing  (spaCy)
-    ↓
-Skill Extraction
-    ↓
-Sentence Embedding Generation  (Sentence Transformers / HuggingFace)
-    ↓
-Cosine Similarity Calculation  (Scikit-learn)
-    ↓
-Skill Gap Analysis + Recommendations
-    ↓
-Streamlit Web App
-```
-
----
-
-## 🎯 Features
+## 🎯 What It Does
 
 | Feature | Description |
 |---|---|
-| 📄 Resume Parsing | Extracts text directly from uploaded PDF resumes |
-| 🧠 Semantic Matching | Transformer embeddings instead of keyword matching |
-| 🔍 Skill Gap Analysis | Detects matched skills and missing skills |
-| 💡 AI Recommendations | Suggests what to learn to improve job fit |
-| 📊 Visualization | Charts for matched vs missing skills |
-| ⚖️ Recruiter Verdict | Auto-classifies: Strong / Moderate / Low Match |
+| 📄 Resume Parsing | Extracts text from uploaded PDF resumes via PyPDF2 |
+| 🧠 Semantic Matching | Uses `all-MiniLM-L6-v2` sentence transformer embeddings |
+| ✅ Skill Extraction | Matches against a curated skills database |
+| 📊 Skill Gap Analysis | Identifies matched vs. missing skills |
+| 💡 Recommendations | Suggests learning resources for missing skills |
+| 📈 Visualization | Bar chart of skill gap breakdown via Matplotlib |
+| 🏆 Recruiter Verdict | Classifies as Strong / Moderate / Low match |
 
 ---
 
-## 📊 Example output
+## 🧠 Core NLP Concepts
 
-```
-Semantic Match Score:   82.4%
-Verdict:                Strong Match ✅
-
-Matched skills:   ['python', 'sql', 'pytorch', 'nlp']
-Missing skills:   ['mlops', 'azure', 'rag']
-
-Recommendation: Consider learning MLOps fundamentals and RAG pipelines
-to significantly improve your match score for this role.
-```
+- Text Preprocessing & Token Cleaning
+- Sentence Transformer Embeddings (`HuggingFace`)
+- Cosine Similarity via `scikit-learn`
+- Skill Extraction from a domain-specific skills database
+- Embedding-based Information Retrieval
 
 ---
 
-## 🛠️ Tech stack
+## ⚙️ Tech Stack
 
 | Category | Tools |
 |---|---|
-| Language | Python 3.9+ |
-| NLP | spaCy, Sentence Transformers, HuggingFace |
-| ML | Scikit-learn (cosine similarity) |
+| Language | Python |
+| NLP / ML | Sentence Transformers, HuggingFace, spaCy, scikit-learn |
+| PDF | PyPDF2 |
 | Visualization | Matplotlib |
-| Deployment | Streamlit |
-| PDF Processing | PyPDF2 |
+| UI / Deployment | Streamlit |
 
 ---
 
-## 🚀 Run locally
+## 🏗️ Architecture
+
+```
+Resume PDF Upload
+      ↓
+PDF Text Extraction (PyPDF2)
+      ↓
+Text Cleaning & NLP Preprocessing
+      ↓
+Skill Extraction (Skills DB lookup)
+      ↓
+Sentence Embedding Generation (all-MiniLM-L6-v2)
+      ↓
+Cosine Similarity Calculation
+      ↓
+Skill Gap Analysis (Matched vs Missing)
+      ↓
+Recommendations + Verdict + Visualization
+```
+
+---
+
+## 📂 Project Structure
+
+```
+Resume-Analyzer/
+├── app.py              # Streamlit UI — upload, inputs, results display
+├── utils.py            # Core logic — PDF extraction, embeddings, similarity, skills
+├── requirements.txt    # Dependencies
+└── README.md
+```
+
+### Key Functions in `utils.py`
+
+| Function | Purpose |
+|---|---|
+| `extract_text_from_pdf(file)` | Reads all pages from uploaded PDF |
+| `clean_text(text)` | Lowercases, removes punctuation, normalizes whitespace |
+| `extract_skills(text)` | Matches text against `SKILLS_DB` list |
+| `compute_similarity(resume, job)` | Generates embeddings and returns cosine similarity (0–100%) |
+
+---
+
+## 📊 Example Output
+
+```
+Semantic Match Score:   82.4%
+Skill Match Score:      75.0%
+Verdict:                Strong Match ✅
+
+Matched Skills:  ['python', 'sql', 'pytorch', 'nlp']
+Missing Skills:  ['mlops', 'azure', 'rag']
+
+Recommendations:
+  • MLOPS  → Learn model deployment and monitoring
+  • AZURE  → Explore Azure AI Services
+  • RAG    → Understand Retrieval-Augmented Generation
+```
+
+---
+
+## 🚀 Getting Started
 
 ```bash
-# Clone the repo
+# 1. Clone the repository
 git clone https://github.com/muneer-ahmad10/Resume-Analyzer.git
 cd Resume-Analyzer
 
-# Install dependencies
+# 2. Install dependencies
 pip install -r requirements.txt
 
-# Run the app
+# 3. Run the Streamlit app
 streamlit run app.py
 ```
 
 ---
 
-## 📁 Project structure
+## 🔍 Why Semantic Search?
 
+Traditional systems treat words as exact tokens:
 ```
-Resume-Analyzer/
-├── app.py              # Streamlit frontend
-├── utils.py            # NLP pipeline & matching logic
-├── requirements.txt    # Dependencies
-└── README.md
+"deep learning" ≠ "neural networks"   ← keyword mismatch → rejected
+```
+
+This project uses embeddings so the model understands:
+```
+deep learning ≈ neural networks       ← semantic match → correctly scored
 ```
 
 ---
 
-## 🔮 Planned improvements
+## 🔮 Future Improvements
 
-- [ ] LLM-powered resume feedback (GPT / Claude API)
-- [ ] FAISS vector database for multi-resume ranking
+- [ ] LLM-powered personalized resume feedback
+- [ ] FAISS vector database for faster similarity search
+- [ ] Multi-resume batch ranking
 - [ ] RAG pipeline integration
 - [ ] Cloud deployment (Streamlit Cloud / HuggingFace Spaces)
 - [ ] AI Interview Preparation Assistant
@@ -132,12 +155,19 @@ Resume-Analyzer/
 
 ---
 
+## 🧠 Key Learning Outcomes
+
+- End-to-end NLP pipeline design
+- Semantic search with transformer embeddings
+- Streamlit app development
+- Modular, production-oriented Python architecture
+- Resume-job matching workflows
+
+---
+
 ## 👨‍💻 Author
 
-**Muneer Ahmad Dar**
+**Muneer Ahmad Dar** — AI Engineer  
+Focus areas: NLP · LLMs · Semantic Search · Deep Learning · Generative AI
 
-AI/NLP Engineer · IIT Guwahati AIML Certification · BCA
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://linkedin.com/in/muneerahmad-826363267)
-[![GitHub](https://img.shields.io/badge/GitHub-0f2027?style=flat-square&logo=github&logoColor=white)](https://github.com/muneer-ahmad10)
-[![Email](https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white)](mailto:abrard855@gmail.com)
+[![GitHub](https://img.shields.io/badge/GitHub-muneer--ahmad10-black?style=flat&logo=github)](https://github.com/muneer-ahmad10)
