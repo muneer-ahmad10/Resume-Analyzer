@@ -2,5 +2,5 @@ streamlit
 PyPDF2
 sentence-transformers
 scikit-learn
+pandas
 matplotlib
-spacy
